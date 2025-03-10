@@ -2,6 +2,7 @@
 #include "bus.h"
 #include "cartridge.h"
 #include "test_rom.h"
+#include "display.h"
 
 using namespace cnes;
 
@@ -31,18 +32,33 @@ int main(int argc, char* argv[]) {
     // 连接卡带到总线
     bus.connect_cartridge(&cartridge);
 
+    PPU* ppu = bus.ppu();
+
     // 重置系统
     bus.reset();
+
+    // 创建并初始化显示系统
+    Display display;
+    if (!display.init("cNES", 256, 240, 3)) {
+        std::cout << "显示系统初始化失败" << std::endl;
+        return -1;
+    }
 
     // 主循环
     bool running = true;
     while (running) {
+        // 处理事件
+        running = display.handle_events();
+
         // 执行一个时钟周期
         bus.clock();
 
-        // TODO: 处理输入事件
-        // TODO: 渲染画面
-        // TODO: 输出音频
+        // 更新画面
+        if (ppu->frame_complete()) {
+            // 获取PPU输出的屏幕数据并更新显示
+            display.update_screen(ppu->get_screen());
+            ppu->clear_frame_complete();
+        }
     }
 
     return 0;
