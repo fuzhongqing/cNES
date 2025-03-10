@@ -1,3 +1,20 @@
+# Build directories
+build/
+out/
+cmake-build-*/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.out
+
 # Prerequisites
 *.d
 
