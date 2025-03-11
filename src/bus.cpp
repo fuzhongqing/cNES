@@ -9,7 +9,6 @@ Bus::Bus() {
 void Bus::write(uint16_t addr, uint8_t data) {
  
   if (cartridge_ && cartridge_->cpu_write(addr, data)) {
-
   }
   else if (addr >= 0x0000 && addr <= 0x1FFF) {
       // 系统RAM，每2KB镜像
