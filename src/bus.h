@@ -32,6 +32,9 @@ public:
     void dma_write(uint8_t data);
     void dma_execute();
 
+    // 获取PPU指针
+    PPU* ppu() { return &ppu_; }
+
 private:
     // 系统组件
     CPU cpu_;

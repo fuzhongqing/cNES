@@ -5,19 +5,19 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "mapper.h"
 
 namespace cnes {
-
-class Mapper;
 
 // NES卡带
 class Cartridge {
 public:
-    Cartridge(const std::string& filename);
+    Cartridge();
     ~Cartridge() = default;
 
     // 卡带操作
     bool load(const std::string& filename);    // 加载ROM文件
+    bool load_from_memory(std::vector<uint8_t> data);      // 从内存中加载
     void reset();                              // 重置卡带
 
     // 内存访问
