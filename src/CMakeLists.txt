@@ -1,6 +1,12 @@
 # 添加所有源文件
 set(SOURCES
     main.cpp
+    bus.cpp
+    cartridge.cpp
+    cpu.cpp
+    ppu.cpp
+    apu.cpp
+    display.cpp
 )
 
 # 创建可执行文件

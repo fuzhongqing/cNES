@@ -18,7 +18,10 @@ public:
     ~Bus() = default;
 
     // 组件连接
-    void connect_cartridge(Cartridge* cartridge);
+    void connect_cartridge(Cartridge* cartridge) { cartridge_ = cartridge; }
+    void connect_cpu(CPU* cpu) { cpu_ = cpu; }
+    void connect_ppu(PPU* ppu) { ppu_ = ppu; }
+    void connect_apu(APU* apu) { apu_ = apu; }
 
     // 总线操作
     void write(uint16_t addr, uint8_t data);
@@ -33,13 +36,13 @@ public:
     void dma_execute();
 
     // 获取PPU指针
-    PPU* ppu() { return &ppu_; }
+    PPU* ppu() { return ppu_; }
 
 private:
     // 系统组件
-    CPU cpu_;
-    PPU ppu_;
-    APU apu_;
+    CPU* cpu_ = nullptr;
+    PPU* ppu_ = nullptr;
+    APU* apu_ = nullptr;
     Cartridge* cartridge_ = nullptr;
 
     // 系统RAM
