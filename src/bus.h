@@ -39,7 +39,7 @@ public:
 
     // 总线操作
     void write(uint16_t addr, uint8_t data);
-    uint8_t read(uint16_t addr, bool read_only = false);
+    uint8_t read(uint16_t addr);
 
     // 系统操作
     void clock();    // 系统时钟

@@ -7,6 +7,7 @@ set(SOURCES
     ppu.cpp
     apu.cpp
     display.cpp
+    cpu_instructions.cpp
 )
 
 # 创建可执行文件

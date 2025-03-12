@@ -33,7 +33,7 @@ void Bus::write(uint16_t addr, uint8_t data) {
   }
 }
 
-uint8_t Bus::read(uint16_t addr, bool read_only) {
+uint8_t Bus::read(uint16_t addr) {
     uint8_t data = 0x00;
 
     if (cartridge_ && cartridge_->cpu_read(addr, data)) {
