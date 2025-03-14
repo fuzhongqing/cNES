@@ -70,6 +70,8 @@ public:
     void nmi();      // 不可屏蔽中断
 
 private:
+    bool enable_debugging_ = false;
+
     // CPU寄存器
     uint8_t a_ = 0x00;       // 累加器
     uint8_t x_ = 0x00;       // X变址寄存器
@@ -77,7 +79,6 @@ private:
     uint8_t sp_ = 0xFD;      // 栈指针
     uint16_t pc_ = 0x0000;   // 程序计数器
     uint8_t status_ = 0x00;   // 状态寄存器
-
 
     // 内部变量
     uint8_t opcode_ = 0x00;           // 当前操作码
@@ -103,6 +104,11 @@ private:
     // 内存访问
     void write(uint16_t addr, uint8_t data);
     uint8_t read(uint16_t addr);
+
+    // 调试
+    void print_status();
+    void enable_debugging();
+    const char* get_op_name();
 };
 
 } // namespace cnes

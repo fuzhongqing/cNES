@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include "mapper.h"
+#include "mapper_000.h"
 
 namespace cnes {
 

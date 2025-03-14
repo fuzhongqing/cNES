@@ -8,6 +8,7 @@ set(SOURCES
     apu.cpp
     display.cpp
     cpu_instructions.cpp
+    mapper_000.cpp
 )
 
 # 创建可执行文件

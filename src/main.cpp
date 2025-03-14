@@ -19,6 +19,14 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    // temp for debugging
+    bool load_ok = cartridge.load("/Users/fuzhongqing/Downloads/test.nes");
+    if (!load_ok)
+    {
+      std::cerr << "ROM load fail" << std::endl;
+      return -1;
+    }
+
     bus.connect_cartridge(&cartridge);
     bus.connect_cpu(&cpu);
     bus.connect_apu(&apu);

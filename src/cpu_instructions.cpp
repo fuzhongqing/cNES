@@ -129,6 +129,7 @@ bool CPU::get_operand_address(CPU::ADDR_MODE mode, uint16_t& addr)
 
   // 指令信息结构体
   struct Instruction {
+    const char*   name;        // 名称
     uint8_t opcode;      // 操作码
     CPU::ADDR_MODE mode;      // 寻址模式
     uint8_t cycles;      // 基本周期数
@@ -172,51 +173,49 @@ bool CPU::get_operand_address(CPU::ADDR_MODE mode, uint16_t& addr)
     }
   }
 
-
-
   // 指令表
   static const Instruction instructions[] = {
-    {0xA9, CPU::ADDR_MODE::IMM, 2, &CPU::LDA}, // LDA Immediate
-    {0xA5, CPU::ADDR_MODE::ZP0, 3, &CPU::LDA}, // LDA Zero Page
-    {0xB5, CPU::ADDR_MODE::ZPX, 4, &CPU::LDA}, // LDA Zero Page,X
-    {0xAD, CPU::ADDR_MODE::ABS, 4, &CPU::LDA}, // LDA Absolute
-    {0xBD, CPU::ADDR_MODE::ABX, 4, &CPU::LDA}, // LDA Absolute,X
-    {0xB9, CPU::ADDR_MODE::ABY, 4, &CPU::LDA}, // LDA Absolute,Y
-    {0xA1, CPU::ADDR_MODE::IZX, 6, &CPU::LDA}, // LDA (Indirect,X)
-    {0xB1, CPU::ADDR_MODE::IZY, 5, &CPU::LDA}, // LDA (Indirect),Y
-
-    {0xA2, CPU::ADDR_MODE::IMM, 2, &CPU::LDX}, // LDX Immediate
-    {0xA6, CPU::ADDR_MODE::ZP0, 3, &CPU::LDX}, // LDX Zero Page
-    {0xB6, CPU::ADDR_MODE::ZPY, 4, &CPU::LDX}, // LDX Zero Page,Y
-    {0xAE, CPU::ADDR_MODE::ABS, 4, &CPU::LDX}, // LDX Absolute
-    {0xBE, CPU::ADDR_MODE::ABY, 4, &CPU::LDX}, // LDX Absolute,Y
-
-    {0xA0, CPU::ADDR_MODE::IMM, 2, &CPU::LDY}, // LDY Immediate
-    {0xA4, CPU::ADDR_MODE::ZP0, 3, &CPU::LDY}, // LDY Zero Page
-    {0xB4, CPU::ADDR_MODE::ZPX, 4, &CPU::LDY}, // LDY Zero Page,X
-    {0xAC, CPU::ADDR_MODE::ABS, 4, &CPU::LDY}, // LDY Absolute
-    {0xBC, CPU::ADDR_MODE::ABX, 4, &CPU::LDY}, // LDY Absolute,X
-
-    {0x85, CPU::ADDR_MODE::ZP0, 3, &CPU::STA}, // STA Zero Page
-    {0x95, CPU::ADDR_MODE::ZPX, 4, &CPU::STA}, // STA Zero Page,X
-    {0x8D, CPU::ADDR_MODE::ABS, 4, &CPU::STA}, // STA Absolute
-    {0x9D, CPU::ADDR_MODE::ABX, 5, &CPU::STA}, // STA Absolute,X
-    {0x99, CPU::ADDR_MODE::ABY, 5, &CPU::STA}, // STA Absolute,Y
-    {0x81, CPU::ADDR_MODE::IZX, 6, &CPU::STA}, // STA (Indirect,X)
-    {0x91, CPU::ADDR_MODE::IZY, 6, &CPU::STA}, // STA (Indirect),Y
-
-    {0x86, CPU::ADDR_MODE::ZP0, 3, &CPU::STX}, // STX Zero Page
-    {0x96, CPU::ADDR_MODE::ZPY, 4, &CPU::STX}, // STX Zero Page,Y
-    {0x8E, CPU::ADDR_MODE::ABS, 4, &CPU::STX}, // STX Absolute
-
-    {0x84, CPU::ADDR_MODE::ZP0, 3, &CPU::STY}, // STY Zero Page
-    {0x94, CPU::ADDR_MODE::ZPX, 4, &CPU::STY}, // STY Zero Page,X
-    {0x8C, CPU::ADDR_MODE::ABS, 4, &CPU::STY}, // STY Absolute
-
-    {0xF0, CPU::ADDR_MODE::REL, 2, &CPU::BEQ}, // BEQ
-    {0xD0, CPU::ADDR_MODE::REL, 2, &CPU::BNE}, // BNE
-    {0xB0, CPU::ADDR_MODE::REL, 2, &CPU::BCS}, // BCS
-    {0x90, CPU::ADDR_MODE::REL, 2, &CPU::BCC}  // BCC
+    {"IMM", 0xA9, CPU::ADDR_MODE::IMM, 2, &CPU::LDA}, // LDA Immediate
+    {"ZP0", 0xA5, CPU::ADDR_MODE::ZP0, 3, &CPU::LDA}, // LDA Zero Page
+    {"ZPX", 0xB5, CPU::ADDR_MODE::ZPX, 4, &CPU::LDA}, // LDA Zero Page,X
+    {"ABS", 0xAD, CPU::ADDR_MODE::ABS, 4, &CPU::LDA}, // LDA Absolute
+    {"ABX", 0xBD, CPU::ADDR_MODE::ABX, 4, &CPU::LDA}, // LDA Absolute,X
+    {"ABY", 0xB9, CPU::ADDR_MODE::ABY, 4, &CPU::LDA}, // LDA Absolute,Y
+    {"IZX", 0xA1, CPU::ADDR_MODE::IZX, 6, &CPU::LDA}, // LDA (Indirect,X)
+    {"IZY", 0xB1, CPU::ADDR_MODE::IZY, 5, &CPU::LDA}, // LDA (Indirect),Y
+         
+    {"IMM", 0xA2, CPU::ADDR_MODE::IMM, 2, &CPU::LDX}, // LDX Immediate
+    {"ZP0", 0xA6, CPU::ADDR_MODE::ZP0, 3, &CPU::LDX}, // LDX Zero Page
+    {"ZPY", 0xB6, CPU::ADDR_MODE::ZPY, 4, &CPU::LDX}, // LDX Zero Page,Y
+    {"ABS", 0xAE, CPU::ADDR_MODE::ABS, 4, &CPU::LDX}, // LDX Absolute
+    {"ABY", 0xBE, CPU::ADDR_MODE::ABY, 4, &CPU::LDX}, // LDX Absolute,Y
+         
+    {"IMM", 0xA0, CPU::ADDR_MODE::IMM, 2, &CPU::LDY}, // LDY Immediate
+    {"ZP0", 0xA4, CPU::ADDR_MODE::ZP0, 3, &CPU::LDY}, // LDY Zero Page
+    {"ZPX", 0xB4, CPU::ADDR_MODE::ZPX, 4, &CPU::LDY}, // LDY Zero Page,X
+    {"ABS", 0xAC, CPU::ADDR_MODE::ABS, 4, &CPU::LDY}, // LDY Absolute
+    {"ABX", 0xBC, CPU::ADDR_MODE::ABX, 4, &CPU::LDY}, // LDY Absolute,X
+         
+    {"ZP0", 0x85, CPU::ADDR_MODE::ZP0, 3, &CPU::STA}, // STA Zero Page
+    {"ZPX", 0x95, CPU::ADDR_MODE::ZPX, 4, &CPU::STA}, // STA Zero Page,X
+    {"ABS", 0x8D, CPU::ADDR_MODE::ABS, 4, &CPU::STA}, // STA Absolute
+    {"ABX", 0x9D, CPU::ADDR_MODE::ABX, 5, &CPU::STA}, // STA Absolute,X
+    {"ABY", 0x99, CPU::ADDR_MODE::ABY, 5, &CPU::STA}, // STA Absolute,Y
+    {"IZX", 0x81, CPU::ADDR_MODE::IZX, 6, &CPU::STA}, // STA (Indirect,X)
+    {"IZY", 0x91, CPU::ADDR_MODE::IZY, 6, &CPU::STA}, // STA (Indirect),Y
+         
+    {"ZP0", 0x86, CPU::ADDR_MODE::ZP0, 3, &CPU::STX}, // STX Zero Page
+    {"ZPY", 0x96, CPU::ADDR_MODE::ZPY, 4, &CPU::STX}, // STX Zero Page,Y
+    {"ABS", 0x8E, CPU::ADDR_MODE::ABS, 4, &CPU::STX}, // STX Absolute
+         
+    {"ZP0", 0x84, CPU::ADDR_MODE::ZP0, 3, &CPU::STY}, // STY Zero Page
+    {"ZPX", 0x94, CPU::ADDR_MODE::ZPX, 4, &CPU::STY}, // STY Zero Page,X
+    {"ABS", 0x8C, CPU::ADDR_MODE::ABS, 4, &CPU::STY}, // STY Absolute
+         
+    {"REL", 0xF0, CPU::ADDR_MODE::REL, 2, &CPU::BEQ}, // BEQ
+    {"REL", 0xD0, CPU::ADDR_MODE::REL, 2, &CPU::BNE}, // BNE
+    {"REL", 0xB0, CPU::ADDR_MODE::REL, 2, &CPU::BCS}, // BCS
+    {"REL", 0x90, CPU::ADDR_MODE::REL, 2, &CPU::BCC}  // BCC
   };
 
   // 辅助函数：设置状态寄存器标志位
@@ -273,4 +272,13 @@ bool CPU::get_operand_address(CPU::ADDR_MODE mode, uint16_t& addr)
     cycles_ = 1;
   }
 
+
+  const char* CPU::get_op_name()
+  {
+    if (opcode_ == 0x00)
+    {
+      return "None";
+    }
+    return instructions[opcode_].name;
+  }
 }
